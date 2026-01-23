@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instaloader</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            min-width: 340px;
+            max-width: 420px;
+            padding: 16px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 200px;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .header h1 {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .header .icon {
+            font-size: 20px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .filter-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .filter-btn.active {
+            background: #0ea5e9;
+            color: white;
+        }
+        
+        .status {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        
+        .status.loading {
+            background: rgba(255,255,255,0.9);
+            color: #1a1a2e;
+        }
+        
+        .status.loading::before {
+            content: '⏳ ';
+        }
+        
+        .status.success {
+            background: rgba(255,255,255,0.95);
+            color: #22c55e;
+        }
+        
+        .status.success::before {
+            content: '✅ ';
+        }
+        
+        .status.error {
+            background: rgba(255,255,255,0.95);
+            color: #ef4444;
+        }
+        
+        .status.error::before {
+            content: '❌ ';
+        }
+        
+        #images-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 8px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding: 4px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+        
+        #images-container:empty {
+            display: none;
+        }
+        
+        .image-item {
+            position: relative;
+            cursor: pointer;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            background: rgba(255,255,255,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .image-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .image-item .placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 100%);
+        }
+        
+        .image-item.loading .placeholder::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+        
+        @keyframes shimmer {
+            100% { left: 100%; }
+        }
+        
+        .image-item.no-preview .placeholder {
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+        }
+        
+        .image-item .download-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .image-item:hover .download-overlay {
+            opacity: 1;
+        }
+        
+        .image-item.downloaded {
+            opacity: 0.6;
+        }
+        
+        .image-item.downloaded::after {
+            content: '✓';
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #22c55e;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 10;
+        }
+        
+        .image-item .size-badge {
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 9px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            z-index: 5;
+        }
+        
+        .footer {
+            margin-top: 12px;
+            text-align: center;
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span class="icon">🖼️</span>
+        <h1>Instaloader</h1>
+    </div>
+    
+    <div class="controls">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="large">Large (500+)</button>
+        <button class="filter-btn" data-filter="medium">Medium</button>
+    </div>
+    
+    <div id="status" class="status loading">Initializing...</div>
+    
+    <div id="images-container"></div>
+    
+    <div class="footer">Click any image to download</div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>
