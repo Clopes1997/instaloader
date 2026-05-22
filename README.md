@@ -4,6 +4,8 @@ A lightweight Chrome extension for downloading images and direct video files fro
 
 Built as a fast, minimal, no-nonsense media grabber for static assets found on regular web pages.
 
+Only supports direct media files made accessible by the website.
+
 ## Features
 
 - Detects and downloads:
