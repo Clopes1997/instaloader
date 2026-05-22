@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Instaloader</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 48px 20px;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 720px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hero-icon { font-size: 64px; line-height: 1; }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 17px;
+            color: rgba(255,255,255,0.65);
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(14,165,233,0.15);
+            border: 1px solid rgba(14,165,233,0.3);
+            color: #38bdf8;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 20px;
+        }
+
+        /* ── Section ── */
+        section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        section h2 {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        /* ── Feature cards ── */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card-icon { font-size: 28px; line-height: 1; }
+
+        .card h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.55;
+        }
+
+        /* ── Steps ── */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 10px;
+            padding: 16px 18px;
+        }
+
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0ea5e9, #6366f1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .step-body h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .step-body p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.55;
+        }
+
+        .step-body code {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 12px;
+            background: rgba(255,255,255,0.1);
+            padding: 1px 6px;
+            border-radius: 4px;
+            color: #a5f3fc;
+        }
+
+        /* ── Socials ── */
+        .socials {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: opacity 0.15s, transform 0.15s;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06);
+            color: white;
+        }
+
+        .social-link:hover { opacity: 0.8; transform: translateY(-1px); }
+
+        .social-icon { font-size: 18px; line-height: 1; }
+
+        .social-link.kofi {
+            background: rgba(255,94,91,0.12);
+            border-color: rgba(255,94,91,0.35);
+            color: #ff9e9c;
+        }
+
+        /* ── Disclaimer ── */
+        .disclaimer {
+            background: rgba(251,191,36,0.07);
+            border: 1px solid rgba(251,191,36,0.25);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        .disclaimer-row {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .disclaimer-icon { font-size: 24px; line-height: 1; flex-shrink: 0; margin-top: 2px; }
+
+        .disclaimer div {
+            font-size: 13px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.65;
+        }
+
+        .disclaimer strong { color: #fcd34d; font-weight: 600; }
+        .disclaimer em { font-style: normal; color: rgba(255,255,255,0.85); }
+
+        .disclaimer a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .disclaimer a:hover { text-decoration: underline; }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255,255,255,0.35);
+            padding-top: 8px;
+            line-height: 1.7;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-icon">🖼️</div>
+        <span class="badge">Just installed</span>
+        <h1>Welcome to Instaloader</h1>
+        <p>A free, open browser extension that lets you browse any website and download every image or video you see — in one click.</p>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+        <div class="disclaimer-row">
+            <span class="disclaimer-icon">⚗️</span>
+            <div>
+                <strong>AI-assisted development ahead</strong> — this extension was built using a combination of
+					ChatGPT Codex, Cursor, and Claude Code.
+					It handles static images and direct video files well, but it <em>cannot</em> download
+					adaptive streams such as <strong>MediaSource / HLS / DASH</strong> (used by platforms like
+					YouTube, Twitch, Netflix, and many modern video sites).
+					For those cases, consider using
+					<a href="https://github.com/yt-dlp/yt-dlp" target="_blank" rel="noopener">yt-dlp</a>
+					or a browser screen recorder.
+            </div>
+        </div>
+    </div>
+
+    <!-- What it does -->
+    <section>
+        <h2>What it does</h2>
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">🔍</div>
+                <h3>Finds everything</h3>
+                <p>Detects images and videos from <code>&lt;img&gt;</code>, <code>&lt;picture&gt;</code>, CSS backgrounds, and <code>&lt;video&gt;</code> elements.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📦</div>
+                <h3>ZIP download</h3>
+                <p>Download all visible images in a single ZIP file — no 50 save dialogs.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎬</div>
+                <h3>Video support</h3>
+                <p>Detects MP4, WebM, MOV and other direct video URLs playing in the page.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔎</div>
+                <h3>Smart filters</h3>
+                <p>Filter by type (images / videos) and size (large 500 px+, medium, any).</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🛡️</div>
+                <h3>Private by design</h3>
+                <p>No servers, no tracking. Everything runs locally in your browser.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>Works anywhere</h3>
+                <p>News sites, portfolios, social feeds, e-commerce — any page you can visit.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to use -->
+    <section>
+        <h2>How to use</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <h3>Navigate to any page</h3>
+                    <p>Open any website that has images or videos you want to save.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <h3>Click the Instaloader icon</h3>
+                    <p>Click the 🖼️ icon in your browser toolbar. The extension scans the page and shows every image and video it finds as a thumbnail grid.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <h3>Filter what you want</h3>
+                    <p>Use the <code>Images</code> / <code>Videos</code> tabs to narrow by type, and <code>Large 500+</code> / <code>Medium</code> to filter by size. Set a custom minimum pixel size in the input field.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                    <h3>Download</h3>
+                    <p><strong>Click a thumbnail</strong> to download that single file. <strong>Download Visible as ZIP</strong> bundles all visible images into one ZIP file (videos are downloaded individually by Chrome's download manager).</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">5</div>
+                <div class="step-body">
+                    <h3>Copy a URL</h3>
+                    <p><strong>Right-click</strong> any thumbnail to copy the direct media URL to your clipboard.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Socials -->
+    <section>
+        <h2>Made by</h2>
+        <div class="socials">
+            <a class="social-link" href="https://github.com/clopes1997" target="_blank" rel="noopener">
+                <span class="social-icon">🐙</span> GitHub
+            </a>
+            <a class="social-link kofi" href="https://ko-fi.com/clopescode97" target="_blank" rel="noopener">
+                <span class="social-icon">☕</span> Support on Ko-fi
+            </a>
+        </div>
+    </section>
+
+    <div class="footer">
+        <p>This extension is free to use, but publishing and maintaining it still costs money.</p>
+        <p>If it saved you time or helped you out, donations are appreciated — never required.</p>
+        <p style="margin-top: 10px; opacity: 0.5;">Instaloader v3</p>
+    </div>
+
+</div>
+</body>
+</html>

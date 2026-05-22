@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Instaloader",
   "version": "3.0",
-  "description": "Easily download images from any website. Click the extension icon to see all images on the current page.",
+  "description": "Download images & videos from any webpage. Filter by type and size, save all as a ZIP, or grab individual files.",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -10,6 +10,9 @@
       "48": "icon48.png",
       "128": "icon128.png"
     }
+  },
+  "background": {
+    "service_worker": "background.js"
   },
   "permissions": [
     "activeTab",
